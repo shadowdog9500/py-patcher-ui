@@ -21,7 +21,7 @@ if __name__ == '__main__':
     # Check if config file exists and load it or create it.
     if not os.path.isfile("config.ini"):
         with open('config.ini', "w") as cf:
-            config['py-patcher'] = {"path": "patch-launcher"}
+            config['py-patcher'] = {"path": "py-patch-windows"}
             config.write(cf)
 
     # Load config file
