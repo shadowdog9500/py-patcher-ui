@@ -15,7 +15,7 @@ NOTE: If you get an error, make sure to edit the config.ini file and set the cor
 ![conf-ini-error](https://github.com/shadowdog9500/py-patcher-ui/blob/main/resources/img/config-error.jpg)
 ![config-ini](https://github.com/shadowdog9500/py-patcher-ui/blob/main/resources/img/conf-ini.jpg)
 
-##Usage
+## Usage
 
 1. Select the file you want to patch
 2. Load the patch list
