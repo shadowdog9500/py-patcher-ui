@@ -19,18 +19,18 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>93</width>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
     <property name="text">
-     <string>Select File</string>
+     <string>Select Binary File</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonLoadPatchFile">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>150</x>
       <y>10</y>
       <width>93</width>
       <height>28</height>

@@ -3,7 +3,7 @@
 #  Copyright (c) 2022 github.com/shadowdog9500 .
 #  License: MIT
 
-# Form implementation generated from reading ui file 'ui/patcher.ui'
+# Form implementation generated from reading ui file 'src/ui/patcher.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -21,10 +21,10 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButtonFileSelect = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButtonFileSelect.setGeometry(QtCore.QRect(10, 10, 93, 28))
+        self.pushButtonFileSelect.setGeometry(QtCore.QRect(10, 10, 121, 28))
         self.pushButtonFileSelect.setObjectName("pushButtonFileSelect")
         self.pushButtonLoadPatchFile = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButtonLoadPatchFile.setGeometry(QtCore.QRect(360, 10, 93, 28))
+        self.pushButtonLoadPatchFile.setGeometry(QtCore.QRect(150, 10, 93, 28))
         self.pushButtonLoadPatchFile.setObjectName("pushButtonLoadPatchFile")
         self.plainTextEditConsole = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.plainTextEditConsole.setGeometry(QtCore.QRect(10, 310, 761, 261))
@@ -55,6 +55,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Patch Selector"))
-        self.pushButtonFileSelect.setText(_translate("MainWindow", "Select File"))
+        self.pushButtonFileSelect.setText(_translate("MainWindow", "Select Binary File"))
         self.pushButtonLoadPatchFile.setText(_translate("MainWindow", "Load patch file"))
         self.pushButtonPatchBinary.setText(_translate("MainWindow", "Patch File"))
