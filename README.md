@@ -1,5 +1,5 @@
 # py-patcher-ui
-UI for illusion0001 py-patcher script
+UI for illusion0001 py-patcher script By ShadowDog
 
 ## Setup:
 
