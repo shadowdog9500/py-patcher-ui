@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-    build_and_test:
+    build_executable:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
@@ -33,7 +33,7 @@ jobs:
             - name: Build application (win32)
               if: matrix.os == 'windows-latest'
               env:
-                my_key: ${{ secrets.tests }}
+                my_key: ${{ secrets.pyinstaller_pass }}
               run: |
                 echo "SHORT_SHA=$($env:GITHUB_SHA.SubString(0,7))" >> $env:GITHUB_ENV
                 python -m pip install tinyaes
@@ -41,7 +41,7 @@ jobs:
                 pyinstaller --onefile --key "$env:my_key" -n py-patcher-ui --distpath . launcher.py -w --splash splash.png
 
             - name: Push app artifact - yml (main)
-              if: github.ref == 'refs/heads/main'
+              if: github.ref == 'refs/heads/dev'
               uses: actions/upload-artifact@v3
               with:
                 name: py-patcher-ui${{ matrix.os }}
@@ -50,7 +50,7 @@ jobs:
                   LICENSE
                   py-patcher-ui
                   py-patcher-ui.exe
-                retention-days: 14
+                retention-days: 2
 
             - name: Upload win32 binaries for release
               env:
