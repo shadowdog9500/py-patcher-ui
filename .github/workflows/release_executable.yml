@@ -1,4 +1,4 @@
-name: Build Executable
+name: release_executable
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_executable:
+  release_executable:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -56,7 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         if: |
-          github.event_name == 'workflow_dispatch' &&
+          github.event_name == 'release_executable' &&
           matrix.os == 'windows-latest'
         run: |
           compress-archive py-patcher-ui.exe, LICENSE, README.md py-patcher-ui-windows.zip
