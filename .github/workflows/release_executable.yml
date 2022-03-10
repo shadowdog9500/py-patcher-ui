@@ -40,8 +40,8 @@ jobs:
           python -m pip install https://github.com/pyinstaller/pyinstaller/archive/refs/heads/develop.zip 
           pyinstaller --onefile --key "$env:my_key" -n py-patcher-ui --distpath . launcher.py -w --splash splash.png
 
-      - name: Push app artifact - yml (main)
-        if: github.ref == 'refs/heads/main'
+      - name: Push app artifact - yml (dev)
+        if: github.ref == 'refs/heads/dev'
         uses: actions/upload-artifact@v3
         with:
           name: py-patcher-ui-${{ matrix.os }}
