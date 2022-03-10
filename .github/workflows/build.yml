@@ -38,7 +38,7 @@ jobs:
           echo "SHORT_SHA=$($env:GITHUB_SHA.SubString(0,7))" >> $env:GITHUB_ENV
           python -m pip install tinyaes
           python -m pip install https://github.com/pyinstaller/pyinstaller/archive/refs/heads/develop.zip 
-          pyinstaller --onefile --key "$env:my_key" -n py-patcher-test --distpath . launcher.py
+          pyinstaller --onefile --key "$env:my_key" -n py-patcher-ui --distpath . launcher.py -w --splash splash.png
 
       - name: Push app artifact - yml (main)
         if: github.ref == 'refs/heads/dev'
@@ -54,7 +54,7 @@ jobs:
 
       - name: Upload win32 binaries for release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         if: |
           github.event_name == 'workflow_dispatch' &&
           matrix.os == 'windows-latest'
