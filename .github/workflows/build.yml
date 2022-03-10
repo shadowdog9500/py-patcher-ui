@@ -1,0 +1,63 @@
+name: Build Executable
+
+on:
+  push:
+    paths:
+      - '.github/workflows/*'
+      - 'src/**'
+  pull_request:
+    paths:
+      - '.github/workflows/*'
+      - 'src/**'
+  workflow_dispatch:
+
+jobs:
+  build_executable:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Build application (win32)
+        if: matrix.os == 'windows-latest'
+        env:
+          my_key: ${{ secrets.pyinstaller_pass }}
+        run: |
+          echo "SHORT_SHA=$($env:GITHUB_SHA.SubString(0,7))" >> $env:GITHUB_ENV
+          python -m pip install tinyaes
+          python -m pip install https://github.com/pyinstaller/pyinstaller/archive/refs/heads/develop.zip 
+          pyinstaller --onefile --key "$env:my_key" -n py-patcher-ui --distpath . launcher.py -w --splash splash.png
+
+      - name: Push app artifact - yml (main)
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v3
+        with:
+          name: py-patcher-ui-${{ matrix.os }}
+          path: |
+            README.md
+            LICENSE
+            py-patcher-ui
+            py-patcher-ui.exe
+          retention-days: 2
+
+      - name: Upload win32 binaries for release
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        if: |
+          github.event_name == 'workflow_dispatch' &&
+          matrix.os == 'windows-latest'
+        run: |
+          compress-archive py-patcher-ui.exe, LICENSE, README.md py-patcher-ui-windows.zip
+          gh release upload $env:SHORT_SHA py-patcher-ui-windows.zip.zip
