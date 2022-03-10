@@ -57,4 +57,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           compress-archive py-patcher-ui.exe, LICENSE, README.md py-patcher-ui-windows.zip
-          gh release upload $env:SHORT_SHA py-patcher-ui-windows.zip.zip
+          gh release upload $env:SHORT_SHA py-patcher-ui-windows.zip
