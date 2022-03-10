@@ -55,9 +55,6 @@ jobs:
       - name: Upload win32 binaries for release
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        if: |
-          github.event_name == 'release_executable' &&
-          matrix.os == 'windows-latest'
         run: |
           compress-archive py-patcher-ui.exe, LICENSE, README.md py-patcher-ui-windows.zip
           gh release upload $env:SHORT_SHA py-patcher-ui-windows.zip.zip
