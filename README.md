@@ -23,3 +23,8 @@ NOTE: If you get an error, make sure to edit the config.ini file and set the cor
 4. Patch the file
 
 ![usage-py-patcher-ui](https://github.com/shadowdog9500/py-patcher-ui/blob/main/resources/img/py-patcher-ui.png)
+
+## TODO: 
+
+ - [ ] Add support for Linux
+ - [ ] Make UI resize with window
