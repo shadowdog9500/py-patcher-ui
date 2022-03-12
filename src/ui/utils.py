@@ -5,12 +5,12 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 
-def uiFileSearch(title: str):
+def uiFileSearch(title: str, file_types=(('All Files','*'),)):
     ui = tk.Tk()
     ui.withdraw()
 
     try:
-        return filedialog.askopenfile(title=title).name
+        return filedialog.askopenfile(title=title,filetypes=file_types).name
     except:
         return None
 
