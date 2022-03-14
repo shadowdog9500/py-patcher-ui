@@ -7,6 +7,7 @@ from src.ui.utils import errorMsgBox
 import configparser
 import sys
 import os
+import qdarkstyle
 
 if __name__ == '__main__':
     # Close PyInstaller Splash Image
@@ -34,10 +35,11 @@ if __name__ == '__main__':
                     "Current path: {}/launcher.exe\n\n"
                     "py-patch download: https://github.com/illusion0001/py-patcher/releases".format(
             config['py-patcher']['path']))
-
-
     else:
         # Load the UI
         app = QApplication([])
+        # Use qdark stylesheet
+        # https://github.com/ColinDuquesnoy/QDarkStyleSheet
+        app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
         q = ui_controller(config['py-patcher']['path'])
         sys.exit(app.exec_())
