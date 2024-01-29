@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-    build_executable:
+    build_ui:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
@@ -30,7 +30,7 @@ jobs:
             - name: Install dependencies
               run: |
                 python -m pip install -r requirements.txt
-                python -m pip install tinyaes git+https://github.com/pyinstaller/pyinstaller.git
+                python -m pip install qdarkstyle tinyaes git+https://github.com/pyinstaller/pyinstaller.git
 
             - name: Get short SHA (win32)
               if: matrix.os == 'windows-latest'
@@ -39,15 +39,24 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
+            - name: Set key (base)
+              if: |
+                github.event_name == 'push' &&
+                github.repository == 'shadowdog9500/py-patcher-ui'
+              run: echo "my_key=${{ secrets.pyinstaller_pass }}" >> ${{ github.env }}
+
+            - name: Set key (fork)
+              if: |
+                github.event_name == 'pull_request' ||
+                github.repository != 'shadowdog9500/py-patcher-ui'
+              run: echo "my_key=${{ github.run_id }}" >> ${{ github.env }}
+
             - name: Build application
-              env:
-                my_key: ${{ secrets.pyinstaller_pass }}
               run: pyinstaller --onefile --key "$env:my_key" -n py-patcher-ui --distpath . launcher.py -w --splash splash.png
 
             - name: Push app artifact
               uses: actions/upload-artifact@v3
               with:
-                name: py-patch-${{ matrix.os }}
                 path: |
                   README.md
                   LICENSE
@@ -55,12 +64,22 @@ jobs:
                   py-patcher-ui.exe
                 retention-days: 7
 
-            - name: Upload win32 binaries for release
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              if: |
-                github.event_name == 'workflow_dispatch' &&
-                matrix.os == 'windows-latest'
-              run: |
-                compress-archive py-patcher-ui.exe, LICENSE, README.md py-patcher-ui-windows.zip
-                gh release create 1.0"${{ GITHUB.RUN_NUMBER }}" py-patcher-ui-windows.zip --target $env:GITHUB_SHA -t 1.0"${{ GITHUB.RUN_NUMBER }}"
+    push_release:
+      if: github.event_name == 'workflow_dispatch'
+      needs: build_ui
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Download artifacts
+          uses: actions/download-artifact@v3
+        - name: Create Release
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+            cd artifact
+            mkdir bin
+            zip bin/py-patch.zip py-patcher-ui.exe LICENSE README.md
+            # tar -czvf bin/py-patch-linux.tar.gz py-patcher-ui LICENSE README.md
+            gh release create 1.0${{ GITHUB.RUN_NUMBER }} bin/* --target ${{ GITHUB.SHA }} -t 1.0${{ GITHUB.RUN_NUMBER }}
+
